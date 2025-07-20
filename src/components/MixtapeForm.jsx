@@ -82,7 +82,7 @@ const MixtapeForm = ({ mixTapeName, setMixTapeName }) => {
       const mixtapeId = result._id; // Adjust this if the key is different
 
       // ✅ Navigate to playback page
-      navigate(`/mixtape/playback?id=${mixtapeId}`);
+      navigate(`/mixtape/playback?v=${mixtapeId}`);
     } catch (error) {
       console.error('Error:', error);
       alert('Something went wrong while creating the mixtape.');
