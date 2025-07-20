@@ -52,10 +52,20 @@ const MixtapeComponent = ({ tapeData }) => {
       } else {
         handlePlay();
       }
+      playpauseRef.current.play();
       return !prev;
     });
   };
-
+  const onStateChange = (event) => {
+    // 0 === ENDED
+    if (event.data === 0) {
+      if (currentPlaying < tapeUrls.length) {
+        setCurrentPlaying((prev) => prev + 1);
+      } else {
+        setIsPlaying(false);
+      }
+    }
+  };
   const handleEject = () => {
     setEject((prev) => {
       if (prev) {
@@ -136,7 +146,13 @@ const MixtapeComponent = ({ tapeData }) => {
         </div>
 
         <div style={{ display: 'none' }}>
-          <YouTube videoId={currentVideoId} opts={opts} onReady={onReady} />;
+          <YouTube
+            videoId={currentVideoId}
+            opts={opts}
+            onReady={onReady}
+            onStateChange={onStateChange}
+          />
+          ;
         </div>
 
         {/* Bottom Reel Dots */}

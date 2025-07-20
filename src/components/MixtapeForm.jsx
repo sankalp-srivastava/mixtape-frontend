@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './MixtapeForm.css';
 const API = import.meta.env.VITE_API_BASE_URL;
 
-const MAX_TRACKS = 5;
+const MAX_TRACKS = 10;
 
 const MixtapeForm = ({ mixTapeName, setMixTapeName }) => {
   const [tracks, setTracks] = useState(['']);
