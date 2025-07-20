@@ -1,0 +1,129 @@
+.mixtape__form_container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background-color: #e6d5b8;
+  border-radius: 10px;
+  margin-top: 1.5rem;
+  width: 25rem;
+  border: 1px solid #d5c4a7;
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.15);
+}
+
+.mixtape__form__name {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+}
+
+.form_headings {
+  color: #8b4513;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.mixtape__input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #8b4513;
+  border-radius: 6px;
+  background-color: #f0e0c0;
+  color: #5d4037;
+  font-family: monospace;
+  font-size: 0.95rem;
+  outline: none;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.mixtape__input::placeholder {
+  color: #a1887f;
+}
+
+.mixtape__input:focus {
+  border-color: #8b4513;
+  box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
+}
+
+.form_lower_text {
+  font-size: 0.65rem;
+  color: #a97e54;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.track_button {
+  background-color: #d5c4a7;
+  border: none;
+  padding: 0.6rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #5d4037;
+}
+
+.submit_button {
+  background-color: #8b4513;
+  color: #fff3e0;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+}
+.track_input_wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.track_number_inside {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: monospace;
+  font-weight: bold;
+  color: #8b4513;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.mixtape__input.with_number {
+  padding-left: 2rem; /* Make space for number */
+  flex: 1;
+  padding-right: 2rem; /* For delete button spacing */
+  border: 1px solid #8b4513;
+  border-radius: 6px;
+  background-color: #f5e6c8;
+  font-family: monospace;
+  font-size: 0.95rem;
+  color: #5d4037;
+  outline: none;
+}
+
+.mixtape__input.with_number::placeholder {
+  color: #a1887f;
+}
+
+.remove_btn {
+  background: transparent;
+  border: none;
+  color: #b22222;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 0.25rem;
+}
