@@ -7,6 +7,7 @@ const API = import.meta.env.VITE_API_BASE_URL;
 function Playback() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  console.log(queryParams);
   const tapeId = queryParams.get('v');
   const [loading, setLoading] = useState(true);
   const [tapeData, setTapeData] = useState(null);
