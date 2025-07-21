@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import YouTube from 'react-youtube';
+import Next5Sec from '../assets/5-sec-f.png';
+import Prev5Sec from '../assets/5-sec.png';
 import CassetteCard from './CassetteCard';
 import './MixtapeComponent.css';
 function getYouTubeVideoId(url) {
@@ -12,10 +14,22 @@ function getYouTubeVideoId(url) {
   const parsedUrl = new URL(urlP);
   return parsedUrl.searchParams.get('v');
 }
+
+const formatTime = (seconds) => {
+  const min = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, '0');
+  const sec = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, '0');
+  return `${min}:${sec}`;
+};
 const MixtapeComponent = ({ tapeData }) => {
   const [eject, setEject] = useState(false);
   const [currentVideoId, setCurrentVideoId] = useState(getYouTubeVideoId(false));
   const [currentPlaying, setCurrentPlaying] = useState(1);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const insertRef = useRef(null);
   const ejectRef = useRef(null);
   const playpauseRef = useRef(null);
@@ -34,7 +48,19 @@ const MixtapeComponent = ({ tapeData }) => {
     playerRef.current = event.target;
     setIsPlaying(false);
     handlePause();
+    // Set duration (in seconds)
+    const checkDuration = () => {
+      const dur = event.target.getDuration();
+      if (dur > 0) {
+        setDuration(dur);
+      } else {
+        setTimeout(checkDuration, 500);
+      }
+    };
+
+    checkDuration();
   };
+
   const opts = {
     height: '500',
     width: '500',
@@ -64,6 +90,19 @@ const MixtapeComponent = ({ tapeData }) => {
       } else {
         setIsPlaying(false);
       }
+    }
+  };
+  const skipForward = () => {
+    if (playerRef.current?.getCurrentTime && playerRef.current?.seekTo) {
+      const newTime = playerRef.current.getCurrentTime() + 5;
+      playerRef.current.seekTo(newTime, true);
+    }
+  };
+
+  const skipBackward = () => {
+    if (playerRef.current?.getCurrentTime && playerRef.current?.seekTo) {
+      const newTime = Math.max(playerRef.current.getCurrentTime() - 5, 0);
+      playerRef.current.seekTo(newTime, true);
     }
   };
   const handleEject = () => {
@@ -99,6 +138,20 @@ const MixtapeComponent = ({ tapeData }) => {
       }
     }
   }, [currentPlaying, tapeUrls]);
+  useEffect(() => {
+    let interval = null;
+
+    if (isPlaying && playerRef.current) {
+      interval = setInterval(() => {
+        const time = playerRef.current.getCurrentTime();
+        setCurrentTime(time);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [isPlaying]);
   return (
     <div className='mixtape-container'>
       <div className='tape-head'>
@@ -165,12 +218,24 @@ const MixtapeComponent = ({ tapeData }) => {
         {/* Track Info */}
         <div className='track-info'>
           <div>{!eject ? 'NO TAPE' : `TRACK ${currentPlaying}/${tapeUrls.length}`}</div>
-          <div className={!isPlaying ? 'track-led' : 'track-led-red'}></div>
+          <div className='time-logo-div'>
+            <div className='track-time'>
+              {eject && (
+                <span>
+                  {formatTime(currentTime)} / {formatTime(duration)}
+                </span>
+              )}
+            </div>
+            <div className={!isPlaying ? 'track-led' : 'track-led-red'}></div>
+          </div>
         </div>
 
         {/* Controls */}
         <div className='end__controls'>
           <div className='buttons'>
+            <button aria-label='Skip back 5s' disabled={!eject} onClick={skipBackward}>
+              <img src={Prev5Sec} alt='Tape' className='button-icon' />
+            </button>
             <button
               aria-label='Previous track'
               disabled={!eject || currentPlaying == 1}
@@ -228,6 +293,9 @@ const MixtapeComponent = ({ tapeData }) => {
               <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
                 <path d='M13 5l7 7-7 7M5 5l7 7-7 7' />
               </svg>
+            </button>
+            <button aria-label='Skip forward 5s' disabled={!eject} onClick={skipForward}>
+              <img src={Next5Sec} alt='Tape' className='button-icon' />
             </button>
           </div>
 
